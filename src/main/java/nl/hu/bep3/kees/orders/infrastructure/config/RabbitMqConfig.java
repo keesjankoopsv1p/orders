@@ -20,72 +20,35 @@ public class RabbitMqConfig {
     @Value("${spring.rabbitmq.port}")
     private int port;
 
-    @Value("${messaging.exchange.jobboard}")
-    private String jobBoardExchangeName;
+    @Value("${messaging.exchange.restaurant}")
+    private String restaurantExchangeName;
 
-    @Value("${messaging.queue.candidate-keywords}")
-    private String candidateKeywordsQueueName;
-    @Value("${messaging.queue.job-keywords}")
-    private String jobKeywordsQueueName;
-    @Value("${messaging.queue.all-keywords}")
-    private String allKeywordsQueueName;
-
-    @Value("${messaging.routing-key.candidate-keywords}")
-    private String candidatesKeywordsRoutingKey;
-    @Value("${messaging.routing-key.job-keywords}")
-    private String jobsKeywordsRoutingKey;
-    @Value("${messaging.routing-key.all-keywords}")
-    private String keywordsRoutingKey;
+    @Value("${messaging.queue.orders-stock}")
+    private String ordersQueueName;
+    @Value("${messaging.routing-key.orders-stock}")
+    private String ordersRoutingKey;
 
     @Bean
-    public TopicExchange jobBoardExchange() {
-        return new TopicExchange(jobBoardExchangeName);
+    public TopicExchange ordersExchange() {
+        return new TopicExchange(restaurantExchangeName);
     }
 
     @Bean
-    public Queue candidatesQueue() {
-        return QueueBuilder.durable(candidateKeywordsQueueName).build();
+    public Queue ordersQueue() {
+        return QueueBuilder.durable(ordersQueueName).build();
     }
 
     @Bean
-    public Binding candidatesKeywordsBinding() {
+    public Binding ordersKeywordsBinding() {
         return BindingBuilder
-                .bind(candidatesQueue())
-                .to(jobBoardExchange())
-                .with(candidatesKeywordsRoutingKey);
-    }
-
-    @Bean
-    public Queue jobsQueue() {
-        // Creates a new queue in RabbitMQ
-        return QueueBuilder.durable(jobKeywordsQueueName).build();
-    }
-
-    @Bean
-    public Binding jobsKeywordsBinding() {
-        return BindingBuilder
-                .bind(jobsQueue())
-                .to(jobBoardExchange())
-                .with(jobsKeywordsRoutingKey);
-    }
-
-    @Bean
-    public Queue keywordsQueue() {
-        // Creates a new queue in RabbitMQ
-        return QueueBuilder.durable(allKeywordsQueueName).build();
-    }
-
-    @Bean
-    public Binding keywordsBinding() {
-        return BindingBuilder
-                .bind(keywordsQueue())
-                .to(jobBoardExchange())
-                .with(keywordsRoutingKey);
+                .bind(ordersQueue())
+                .to(ordersExchange())
+                .with(ordersRoutingKey);
     }
 
     @Bean
     public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {
-        return new RabbitMqEventPublisher(template, jobBoardExchangeName);
+        return new RabbitMqEventPublisher(template, restaurantExchangeName);
     }
 
     @Bean

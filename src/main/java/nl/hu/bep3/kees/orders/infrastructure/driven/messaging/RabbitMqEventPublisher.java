@@ -6,17 +6,17 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class RabbitMqEventPublisher implements OrderEventPublisher {
     private final RabbitTemplate rabbitTemplate;
-    private final String orderExchange;
+    private final String restaurantExchange;
 
     public RabbitMqEventPublisher(
             RabbitTemplate rabbitTemplate,
-            String orderExchange
+            String restaurantExchange
     ) {
         this.rabbitTemplate = rabbitTemplate;
-        this.orderExchange = orderExchange;
+        this.restaurantExchange = restaurantExchange;
     }
 
     public void publish(OrderEvent event) {
-        this.rabbitTemplate.convertAndSend(orderExchange, event.getEventKey(), event);
+        this.rabbitTemplate.convertAndSend(restaurantExchange, event.getEventKey(), event);
     }
 }

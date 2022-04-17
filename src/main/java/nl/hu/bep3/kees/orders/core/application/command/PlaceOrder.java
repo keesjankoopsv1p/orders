@@ -2,16 +2,15 @@ package nl.hu.bep3.kees.orders.core.application.command;
 
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.UUID;
 
 public class PlaceOrder {
-    private final Hashtable<UUID, Integer> meals;
+    private final Hashtable<String, Integer> meals;
     private final String customerName;
     private final String customerSurname;
     private final Date orderTime;
     private final String comment;
 
-    public PlaceOrder(Hashtable<UUID, Integer> meals, String customerName, String customerSurname, Date orderTime, String comment) {
+    public PlaceOrder(Hashtable<String, Integer> meals, String customerName, String customerSurname, Date orderTime, String comment) {
         this.meals = meals;
         this.customerName = customerName;
         this.customerSurname = customerSurname;
@@ -19,7 +18,7 @@ public class PlaceOrder {
         this.comment = comment;
     }
 
-    public Hashtable<UUID, Integer> getMeals() {
+    public Hashtable<String, Integer> getMeals() {
         return meals;
     }
 

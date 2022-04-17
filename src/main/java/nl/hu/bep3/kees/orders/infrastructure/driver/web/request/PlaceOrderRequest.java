@@ -3,7 +3,6 @@ package nl.hu.bep3.kees.orders.infrastructure.driver.web.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class PlaceOrderRequest {
     @NotBlank
@@ -16,6 +15,6 @@ public class PlaceOrderRequest {
     public String comment;
 
     @NotNull
-    public ArrayList<UUID> meals;
+    public ArrayList<String> meals;
 
 }

@@ -1,37 +1,37 @@
 package nl.hu.bep3.kees.orders.infrastructure.driver.web;
 
 import nl.hu.bep3.kees.orders.core.application.OrderCommandHandler;
-import nl.hu.bep3.kees.orders.core.application.OrderQueryHandler;
 import nl.hu.bep3.kees.orders.core.application.command.PlaceOrder;
 import nl.hu.bep3.kees.orders.core.domain.Order;
 import nl.hu.bep3.kees.orders.infrastructure.driver.web.request.PlaceOrderRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+public class CommandOrderController {
     private final OrderCommandHandler commandHandler;
-    private final OrderQueryHandler queryHandler;
 
-    public OrderController(OrderCommandHandler commandHandler, OrderQueryHandler queryHandler) {
+    public CommandOrderController(OrderCommandHandler commandHandler) {
         this.commandHandler = commandHandler;
-        this.queryHandler = queryHandler;
     }
 
+    //
     @PostMapping
-    public Order PlaceOrder(@Valid @RequestBody PlaceOrderRequest request) {
+    public Order placeOrder(@Valid @RequestBody PlaceOrderRequest request) {
         Date orderTime  = new Date();
 
         //transform Arraylist with duplicates to Hashtable with mealID + quantity
-        ArrayList<UUID> temp = request.meals;
-        Hashtable<UUID, Integer> meals = new Hashtable<>();
-        for (UUID meal : request.meals) {
+        ArrayList<String> temp = request.meals;
+        Hashtable<String, Integer> meals = new Hashtable<>();
+        for (String meal : request.meals) {
             if(meals.containsKey(meal)){
                 meals.replace(meal, meals.get(meal), meals.get(meal)+1);
             }else {
